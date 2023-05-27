@@ -177,7 +177,7 @@ public class GUI extends javax.swing.JFrame {
                               .addGap(19, 19, 19))
       );
 
-      jTabbedPane1.addTab("User Recommends", userRecommendsPanel);
+      jTabbedPane1.addTab("Existing User", userRecommendsPanel);
 
       movieRecommendsPanel.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -366,7 +366,7 @@ public class GUI extends javax.swing.JFrame {
                               .addContainerGap(23, Short.MAX_VALUE))
       );
 
-      jTabbedPane1.addTab("Movie Recommends", movieRecommendsPanel);
+      jTabbedPane1.addTab("New User", movieRecommendsPanel);
 
       javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
       getContentPane().setLayout(layout);
@@ -404,9 +404,9 @@ public class GUI extends javax.swing.JFrame {
          userID = targetUserComboBox.getSelectedIndex();
       }
       targetUser = targetUsers.get(userID);
+
       k = (int) kTargetuserSpinner.getValue();
       x = (int) xTargetUserSpinner.getValue();
-
       recommender = new Recommender(targetUser, k, x);
 
       List<Movie> movieRecommendations = recommender.getMovieRecommendations();
@@ -464,24 +464,15 @@ public class GUI extends javax.swing.JFrame {
       dummyUserRatings.put(movieEID, ratingE);
 
       User dummyUser = new User(611, dummyUserRatings);
-      for (Integer movieID : targetUsers.get(0).
-
-              getRatings().
-
-              keySet()) {
+      for (Integer movieID : targetUsers.get(0).getRatings().keySet()) {
          if (!dummyUser.getRatings().containsKey(movieID)) {
             dummyUser.getRatings().put(movieID, 0);
          }
       }
-
-      recommender = new
-
-              Recommender(dummyUser, k, x);
+      recommender = new Recommender(dummyUser, k, x);
 
       List<Movie> movieRecommendationsDummy = recommender.getMovieRecommendations();
-      movieRecommendationsDummy.forEach(movie ->
-
-      {
+      movieRecommendationsDummy.forEach(movie -> {
          listModelDummy.addElement(movie.getTitle());
       });
 

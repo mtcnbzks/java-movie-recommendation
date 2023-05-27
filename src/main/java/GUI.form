@@ -46,8 +46,8 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="User Recommends">
-                <Property name="tabTitle" type="java.lang.String" value="User Recommends"/>
+              <JTabbedPaneConstraints tabName="Existing User">
+                <Property name="tabTitle" type="java.lang.String" value="Existing User"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -234,8 +234,8 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Movie Recommends">
-                <Property name="tabTitle" type="java.lang.String" value="Movie Recommends"/>
+              <JTabbedPaneConstraints tabName="New User">
+                <Property name="tabTitle" type="java.lang.String" value="New User"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
