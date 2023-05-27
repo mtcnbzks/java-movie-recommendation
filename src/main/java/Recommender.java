@@ -5,18 +5,17 @@ import java.util.*;
 
 public class Recommender {
    private final User targetUser;
-   private List<User> users; // all users
+   private static final List<User> users = getUsers(); // all users
    private int k; // similar user count
    private int x; // movie count
 
    public Recommender(User targetUser, int k, int x) {
       this.targetUser = targetUser;
-      this.users = getUsers();
       this.k = k;
       this.x = x;
    }
 
-   private MaxHeap<User> getCloseUsers() {
+   public MaxHeap<User> getCloseUsers() {
       MaxHeap<User> closeUsers = new MaxHeap<>();
 
       for (User user : users) {
@@ -126,22 +125,21 @@ public class Recommender {
       return new Movie(movieID, title, genres);
    }
 
-
-   private List<User> getUsers() {
+   private static List<User> getUsers() {
       List<User> users = new ArrayList<>();
       String fileName = "main_data.csv";
 
-      return readCSV(users, fileName);
+      return readUsersCSV(users, fileName);
    }
 
    public static List<User> getTargetUsers() {
       List<User> targetUsers = new ArrayList<>();
       String fileName = "target_user.csv";
 
-      return readCSV(targetUsers, fileName);
+      return readUsersCSV(targetUsers, fileName);
    }
 
-   private static List<User> readCSV(List<User> targetUsers, String fileName) {
+   private static List<User> readUsersCSV(List<User> users, String fileName) {
       try (BufferedReader bufferedReader = getBufferedReader(fileName)) {
 
          // pass the first line
@@ -149,14 +147,14 @@ public class Recommender {
 
          String line;
          while ((line = bufferedReader.readLine()) != null) {
-            targetUsers.add(createUser(line.trim()));
+            users.add(createUser(line.trim()));
          }
 
       } catch (IOException e) {
          e.printStackTrace();
       }
 
-      return targetUsers;
+      return users;
    }
 
    private static User createUser(String line) {
@@ -171,7 +169,6 @@ public class Recommender {
       }
       return new User(userID, ratings);
    }
-
 
    public double similarity(User user1, User user2) {
       ArrayList<Integer> user1Ratings = new ArrayList<>(user1.getRatings().values());
@@ -206,12 +203,8 @@ public class Recommender {
       return targetUser;
    }
 
-   public List<User> getUsersList() {
+   public static List<User> getUsersList() {
       return users;
-   }
-
-   public void setUsersList(List<User> users) {
-      this.users = users;
    }
 
    public int getK() {
