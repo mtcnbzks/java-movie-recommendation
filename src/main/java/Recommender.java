@@ -93,7 +93,7 @@ public class Recommender {
    // ************************************************************************************************* \\
    private static BufferedReader getBufferedReader(String fileName) {
       return new BufferedReader(
-              new InputStreamReader(Objects.requireNonNull(Recommender.class.getResourceAsStream("/" + fileName))));
+              new InputStreamReader(Objects.requireNonNull(Recommender.class.getResourceAsStream(fileName))));
    }
 
    public static List<Movie> getMovies() {
