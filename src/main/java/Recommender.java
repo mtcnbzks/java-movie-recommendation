@@ -15,6 +15,7 @@ public class Recommender {
       this.x = x;
    }
 
+   // adds all users to max heap according to similarity
    public MaxHeap<User> getCloseUsers() {
       MaxHeap<User> closeUsers = new MaxHeap<>();
 
@@ -27,6 +28,7 @@ public class Recommender {
       return closeUsers;
    }
 
+   // returns K of the most similar users to target user
    public MaxHeap<User> getKCloseUsers() {
       MaxHeap<User> closeUsers = getCloseUsers();
 
@@ -39,7 +41,8 @@ public class Recommender {
       return kCloseUsers;
    }
 
-   private List<Movie> getMostRatedUserMovies(User user) {
+   // returns X of the most rated movies by given user
+   public List<Movie> getXMostRatedUserMovies(User user) {
       HashMap<Integer, Integer> userRatings = user.getRatings();
 
       List<Movie> movies = getMovies();
@@ -49,7 +52,7 @@ public class Recommender {
          int movieID = movie.getMovieID();
 
          if (userRatings.get(movieID) != 0) {
-            ratedUserMovies.add(movie);
+            ratedUserMovies.add(movie); // add rated movies to ratedUserMovies
          }
       }
       // sort ratedMovies according to user given ratings in descending order
@@ -60,18 +63,8 @@ public class Recommender {
          return Integer.compare(movie2Rating, movie1Rating);
       });
 
-      return ratedUserMovies;
-   }
-
-   public List<Movie> getXMostRatedUserMovies(User user) {
-      List<Movie> mostRatedUserMovies = getMostRatedUserMovies(user);
-      List<Movie> xMostRatedUserMovies = new ArrayList<>();
-
-      for (int i = 0; i < x; i++) {
-         xMostRatedUserMovies.add(mostRatedUserMovies.get(i));
-      }
-
-      return xMostRatedUserMovies;
+      // return X of the most rated movies by given user
+      return ratedUserMovies.subList(0, Math.min(x, ratedUserMovies.size()));
    }
 
    public List<Movie> getMovieRecommendations() {
@@ -79,11 +72,12 @@ public class Recommender {
 
       MaxHeap<User> KCloseUsers = getKCloseUsers();
 
+      // get X of the most rated movies by each user in KCloseUsers
       final int K_COUNT = KCloseUsers.getSize();
       for (int k = 0; k < K_COUNT; k++) {
          User user = KCloseUsers.remove();
          List<Movie> xMostRatedUserMovies = getXMostRatedUserMovies(user);
-         movieRecommendations.addAll(xMostRatedUserMovies);
+         movieRecommendations.addAll(xMostRatedUserMovies); // add all movies to movieRecommendations
       }
 
       return movieRecommendations;
@@ -107,7 +101,7 @@ public class Recommender {
 
          String line;
          while ((line = bufferedReader.readLine()) != null) {
-            movies.add(createMovie(line.trim()));
+            movies.add(createMovie(line.trim())); // create movie and add to movies list
          }
 
       } catch (IOException e) {
@@ -118,6 +112,7 @@ public class Recommender {
    }
 
    private static Movie createMovie(String line) {
+      // split line by comma, but ignore commas inside quotes
       String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
       int movieID = Integer.parseInt(parts[0]);
       String title = parts[1];
@@ -147,7 +142,7 @@ public class Recommender {
 
          String line;
          while ((line = bufferedReader.readLine()) != null) {
-            users.add(createUser(line.trim()));
+            users.add(createUser(line.trim())); // create user and add to users list
          }
 
       } catch (IOException e) {
@@ -158,25 +153,30 @@ public class Recommender {
    }
 
    private static User createUser(String line) {
+      // split line by comma
       String[] split = line.split(",");
 
       int userID = Integer.parseInt(split[0]);
 
+      // create ratings map
       HashMap<Integer, Integer> ratings = new HashMap<>();
       for (int i = 1; i < split.length; i++) {
          int rating = Integer.parseInt(split[i]);
-         ratings.put(i, rating);
+         ratings.put(i, rating); // add rating to ratings map
       }
       return new User(userID, ratings);
    }
 
+   // calculates cosine similarity between two users
    public double similarity(User user1, User user2) {
+      // get ratings of users as array lists
       ArrayList<Integer> user1Ratings = new ArrayList<>(user1.getRatings().values());
       ArrayList<Integer> user2Ratings = new ArrayList<>(user2.getRatings().values());
 
       return cosineSimilarity(user1Ratings, user2Ratings);
    }
 
+   // calculates cosine similarity between two vectors
    private static double cosineSimilarity(ArrayList<Integer> vector1, ArrayList<Integer> vector2) {
       if (vector1.size() != vector2.size()) {
          throw new IllegalArgumentException("Dimensions don't match");
